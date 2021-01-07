@@ -4,7 +4,6 @@ class DefaultConfig:
     dataset_img_dir = '../dataset/merge/train_images'
     n_classes = 5
     resolution = 512
-    fold_idx = 1
 
     # training
     SEED = 0

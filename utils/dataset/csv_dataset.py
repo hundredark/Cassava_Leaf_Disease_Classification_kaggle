@@ -25,15 +25,15 @@ def rand_bbox(size, lam):
 
 
 class CassavaDataset(Dataset):
-    def __init__(self, config, mode="train", transforms=None):
+    def __init__(self, config, mode="train", fold_idx=0, transforms=None):
         super().__init__()
         self.config = config
         self.mode       = mode
         self.transforms = transforms
 
         self.data_csv = pd.read_csv(config.dataset_csv_path)
-        train_split = np.load("../dataset/merge/cross_val/Fold{}_Train.npy".format(config.fold_idx))
-        valid_split = np.load("../dataset/merge/cross_val/Fold{}_Val.npy".format(config.fold_idx))
+        train_split = np.load("../dataset/merge/cross_val/Fold{}_Train.npy".format(fold_idx))
+        valid_split = np.load("../dataset/merge/cross_val/Fold{}_Val.npy".format(fold_idx))
         self.split = train_split if self.mode == "train" else valid_split
 
         # self.data_root = data_root

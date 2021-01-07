@@ -10,8 +10,6 @@ from tqdm import tqdm
 import torch
 import torch.backends.cudnn as cudnn
 from torch.utils.data import DataLoader
-# from torch.cuda.amp import autocast, GradScaler
-
 from config import DefaultConfig
 from utils.dataset.csv_dataset import CassavaDataset
 from utils.dataset.cls_transforms import *
@@ -20,34 +18,22 @@ from utils.dataset.cls_transforms import *
 # from glob import glob
 # from sklearn.model_selection import GroupKFold, StratifiedKFold
 # from skimage import io
-#
-# from datetime import datetime
-# import torchvision
-# from torchvision import transforms
-#
-#
-#
 # import matplotlib.pyplot as plt
-# from torch.utils.data.sampler import SequentialSampler, RandomSampler
 # from torch.nn.modules.loss import _WeightedLoss
 # import torch.nn.functional as F
-#
-#
 # import sklearn
 # import warnings
 # import joblib
 # from sklearn.metrics import roc_auc_score, log_loss
 # from sklearn import metrics
 # import warnings
-# import cv2
 # import pydicom
 # #from efficientnet_pytorch import EfficientNet
 # from scipy.ndimage.interpolation import zoom
-#
 # from FMix.fmix import sample_mask, make_low_freq_image, binarise_mask
 
 
-def train(config):
+def train(config, fold_idx):
     model = CassvaImgClassifier(model_arch, config.n_classes, pretrained=True).to(device)
 
     # scaler = GradScaler()
@@ -69,7 +55,7 @@ def train(config):
         with torch.no_grad():
             valid_one_epoch(config, epoch, model, loss_fn, valid_loader, device, scheduler=None, schd_loss_update=False)
 
-        torch.save(model.state_dict(), '{}_fold_{}_{}'.format(model_arch, config.fold_idx, epoch))
+        torch.save(model.state_dict(), '{}_fold_{}_{}'.format(model_arch, fold_idx, epoch))
 
     del model, optimizer, train_loader, valid_loader, scheduler
     torch.cuda.empty_cache()
@@ -205,4 +191,5 @@ if __name__ == "__main__":
     print(label2int)
     '''
 
-    train(config)
+    for i in range(5):
+        train(config, i)
