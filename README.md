@@ -3,10 +3,6 @@ dataset(2019+2020): https://www.kaggle.com/kingofarmy/cassavapreprocessed
 
 
 TODO:   
-5 folds submit   
-avg across folds submit  
-oversampling   
-froze bn layer   
 label smoothing   
 deal with data noise   
 

@@ -25,16 +25,13 @@ def rand_bbox(size, lam):
 
 
 class CassavaDataset(Dataset):
-    def __init__(self, config, mode="train", fold_idx=0, transforms=None):
+    def __init__(self, config, pd, image_ids, mode="train", transforms=None):
         super().__init__()
-        self.config = config
+        self.config     = config
+        self.pd         = pd
+        self.image_ids  = image_ids
         self.mode       = mode
         self.transforms = transforms
-
-        self.data_csv = pd.read_csv(config.dataset_csv_path)
-        train_split = np.load("../dataset/merge/cross_val/Fold{}_Train.npy".format(fold_idx))
-        valid_split = np.load("../dataset/merge/cross_val/Fold{}_Val.npy".format(fold_idx))
-        self.split = train_split if self.mode == "train" else valid_split
 
         # self.data_root = data_root
         # self.do_fmix = do_fmix
@@ -54,10 +51,11 @@ class CassavaDataset(Dataset):
         #         # print(self.labels)
 
     def __len__(self):
-        return len(self.split)
+        return len(self.image_ids)
 
     def __getitem__(self, index):
-        img_name, label, _, _ = self.data_csv.iloc[index]
+        image_id = self.image_ids[index]
+        img_name, label, _, _, _ = self.pd.iloc[image_id]
         img_path = os.path.join(self.config.dataset_img_dir, img_name)
         img = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB).astype(np.uint8)
 

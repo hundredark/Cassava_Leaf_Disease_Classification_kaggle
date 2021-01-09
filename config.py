@@ -4,17 +4,19 @@ class DefaultConfig:
     dataset_img_dir = '../dataset/merge/train_images'
     n_classes = 5
     resolution = 512
+    oversampling = True
+    n_folds = 5
 
     # training
     SEED = 0
     num_workers = 4
 
     label_smooth_eps = 0.0 # 1 - > 1.0 - 0.5 * eps, 0 -> 0.5 * eps
-    BATCH_SIZE = 4
+    BATCH_SIZE = 8
     model_arch= 'tf_efficientnet_b4_ns'
     epochs = 10
     T_0 = 10
-    lr = 1e-4
+    lr = 2e-4
     min_lr = 1e-6
     weight_decay= 1e-6
     num_workers = 0
